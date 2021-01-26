@@ -16,8 +16,9 @@ namespace DecisionDiagrams
         /// </summary>
         /// <param name="manager">The manager.</param>
         /// <param name="indices">The variable indices.</param>
-        internal VarBool(DDManager<T> manager, int[] indices)
-            : base(manager, indices, VariableType.BOOL, (i) => i)
+        /// <param name="prob">The variable indices.</param>
+        internal VarBool(DDManager<T> manager, int[] indices, double prob)
+            : base(manager, indices, VariableType.BOOL, (i) => i, prob)
         {
         }
 

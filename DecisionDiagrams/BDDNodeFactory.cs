@@ -40,19 +40,19 @@ namespace DecisionDiagrams
             {
                 var xlow = this.Manager.And(x.Low, yid);
                 var xhigh = this.Manager.And(x.High, yid);
-                return this.Manager.Allocate(new BDDNode(x.Variable, xlow, xhigh));
+                return this.Manager.Allocate(new BDDNode(x.Variable, xlow, xhigh, 0));
             }
             else if (y.Variable < x.Variable)
             {
                 var ylow = this.Manager.And(y.Low, xid);
                 var yhigh = this.Manager.And(y.High, xid);
-                return this.Manager.Allocate(new BDDNode(y.Variable, ylow, yhigh));
+                return this.Manager.Allocate(new BDDNode(y.Variable, ylow, yhigh, 0));
             }
             else
             {
                 var low = this.Manager.And(x.Low, y.Low);
                 var high = this.Manager.And(x.High, y.High);
-                return this.Manager.Allocate(new BDDNode(x.Variable, low, high));
+                return this.Manager.Allocate(new BDDNode(x.Variable, low, high, 0));
             }
         }
 
@@ -79,19 +79,19 @@ namespace DecisionDiagrams
                 {
                     var x = this.Manager.IteRecursive(f.Low, g.Low, h.Low);
                     var y = this.Manager.IteRecursive(f.High, g.High, h.High);
-                    return this.Manager.Allocate(new BDDNode(f.Variable, x, y));
+                    return this.Manager.Allocate(new BDDNode(f.Variable, x, y, 0));
                 }
                 else if (flevel < hlevel)
                 {
                     var x = this.Manager.IteRecursive(f.Low, g.Low, hid);
                     var y = this.Manager.IteRecursive(f.High, g.High, hid);
-                    return this.Manager.Allocate(new BDDNode(f.Variable, x, y));
+                    return this.Manager.Allocate(new BDDNode(f.Variable, x, y, 0));
                 }
                 else
                 {
                     var x = this.Manager.IteRecursive(fid, gid, h.Low);
                     var y = this.Manager.IteRecursive(fid, gid, h.High);
-                    return this.Manager.Allocate(new BDDNode(h.Variable, x, y));
+                    return this.Manager.Allocate(new BDDNode(h.Variable, x, y, 0));
                 }
             }
             else if (flevel < glevel)
@@ -100,19 +100,19 @@ namespace DecisionDiagrams
                 {
                     var x = this.Manager.IteRecursive(f.Low, gid, h.Low);
                     var y = this.Manager.IteRecursive(f.High, gid, h.High);
-                    return this.Manager.Allocate(new BDDNode(f.Variable, x, y));
+                    return this.Manager.Allocate(new BDDNode(f.Variable, x, y, 0));
                 }
                 else if (flevel < hlevel)
                 {
                     var x = this.Manager.IteRecursive(f.Low, gid, hid);
                     var y = this.Manager.IteRecursive(f.High, gid, hid);
-                    return this.Manager.Allocate(new BDDNode(f.Variable, x, y));
+                    return this.Manager.Allocate(new BDDNode(f.Variable, x, y, 0));
                 }
                 else
                 {
                     var x = this.Manager.IteRecursive(fid, gid, h.Low);
                     var y = this.Manager.IteRecursive(fid, gid, h.High);
-                    return this.Manager.Allocate(new BDDNode(h.Variable, x, y));
+                    return this.Manager.Allocate(new BDDNode(h.Variable, x, y, 0));
                 }
             }
             else
@@ -121,20 +121,20 @@ namespace DecisionDiagrams
                 {
                     var x = this.Manager.IteRecursive(fid, g.Low, h.Low);
                     var y = this.Manager.IteRecursive(fid, g.High, h.High);
-                    return this.Manager.Allocate(new BDDNode(g.Variable, x, y));
+                    return this.Manager.Allocate(new BDDNode(g.Variable, x, y, 0));
                 }
                 else
                 if (glevel < hlevel)
                 {
                     var x = this.Manager.IteRecursive(fid, g.Low, hid);
                     var y = this.Manager.IteRecursive(fid, g.High, hid);
-                    return this.Manager.Allocate(new BDDNode(g.Variable, x, y));
+                    return this.Manager.Allocate(new BDDNode(g.Variable, x, y, 0));
                 }
                 else
                 {
                     var x = this.Manager.IteRecursive(fid, gid, h.Low);
                     var y = this.Manager.IteRecursive(fid, gid, h.High);
-                    return this.Manager.Allocate(new BDDNode(h.Variable, x, y));
+                    return this.Manager.Allocate(new BDDNode(h.Variable, x, y, 0));
                 }
             }
         }
@@ -161,7 +161,7 @@ namespace DecisionDiagrams
                 return this.Manager.Or(lo, hi);
             }
 
-            return this.Manager.Allocate(new BDDNode(x.Variable, lo, hi));
+            return this.Manager.Allocate(new BDDNode(x.Variable, lo, hi, 0));
         }
 
         /// <summary>
@@ -207,25 +207,25 @@ namespace DecisionDiagrams
 
             if (level < loLevel && level < hiLevel)
             {
-                return this.Manager.Allocate(new BDDNode(level, lo, hi));
+                return this.Manager.Allocate(new BDDNode(level, lo, hi, 0));
             }
             else if (loLevel < hiLevel)
             {
                 var l = RepairOrder(level, loNode.Low, hi);
                 var h = RepairOrder(level, loNode.High, hi);
-                return this.Manager.Allocate(new BDDNode(loNode.Variable, l, h));
+                return this.Manager.Allocate(new BDDNode(loNode.Variable, l, h, 0));
             }
             else if (loLevel > hiLevel)
             {
                 var l = RepairOrder(level, lo, hiNode.Low);
                 var h = RepairOrder(level, lo, hiNode.High);
-                return this.Manager.Allocate(new BDDNode(hiNode.Variable, l, h));
+                return this.Manager.Allocate(new BDDNode(hiNode.Variable, l, h, 0));
             }
             else
             {
                 var l = RepairOrder(level, loNode.Low, hiNode.Low);
                 var h = RepairOrder(level, loNode.High, hiNode.High);
-                return this.Manager.Allocate(new BDDNode(loNode.Variable, l, h));
+                return this.Manager.Allocate(new BDDNode(loNode.Variable, l, h, 0));
             }
         }
 
@@ -236,7 +236,7 @@ namespace DecisionDiagrams
         /// <returns>A copy of the node with the children flipped.</returns>
         public BDDNode Flip(BDDNode node)
         {
-            return new BDDNode(node.Variable, node.Low.Flip(), node.High.Flip());
+            return new BDDNode(node.Variable, node.Low.Flip(), node.High.Flip(), 0);
         }
 
         /// <summary>
@@ -246,7 +246,7 @@ namespace DecisionDiagrams
         /// <returns>The identity node.</returns>
         public BDDNode Id(int variable)
         {
-            return new BDDNode(variable, DDIndex.False, DDIndex.True);
+            return new BDDNode(variable, DDIndex.False, DDIndex.True, 0.1);
         }
 
         /// <summary>

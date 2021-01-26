@@ -1,23 +1,13 @@
-﻿// <copyright file="DiagramTests.cs" company="Microsoft">
-// Copyright (c) Microsoft. All rights reserved.
-// </copyright>
+﻿using System;
+using System.Collections.Generic;
+using DecisionDiagrams;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
-namespace DecisionDiagramTests
+namespace ConsoleApp3
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using DecisionDiagrams;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    /// <summary>
-    /// Tests for decision diagrams.
-    /// </summary>
-    /// <typeparam name="T">The node type.</typeparam>
-    [ExcludeFromCodeCoverage]
-    public class DiagramTests<T>
-        where T : IDDNode
+    class Test<T> where T : IDDNode
     {
         /// <summary>
         /// How many random inputs to generate per test.

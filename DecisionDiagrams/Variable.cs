@@ -37,6 +37,47 @@ namespace DecisionDiagrams
         /// </summary>
         private int[] reverseOrder;
 
+        private double Prob;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Variable{T}"/> class.
+        /// </summary>
+        /// <param name="manager">The manager.</param>
+        /// <param name="indices">The variable indices.</param>
+        /// <param name="type">The variable type.</param>
+        /// <param name="order">The variable order.</param>
+        /// <param name="prob"> </param>
+        internal Variable(DDManager<T> manager, int[] indices, VariableType type, Func<int, int> order, double prob)
+        {
+            this.uid = Interlocked.Increment(ref id);
+            this.Manager = manager;
+            this.Indices = indices;
+            this.ReverseIndices = new Dictionary<int, int>();
+            this.Type = type;
+            this.order = order;
+            this.reverseOrder = new int[indices.Length];
+            this.Prob = prob;
+
+            var mapped = new HashSet<int>();
+            for (int i = 0; i < indices.Length; i++)
+            {
+                this.ReverseIndices[this.Indices[i]] = i;
+                var j = this.order(i);
+                if (j < 0 || j >= indices.Length)
+                {
+                    throw new ArgumentException($"Invalid variable order provided.");
+                }
+
+                if (mapped.Contains(j))
+                {
+                    throw new ArgumentException($"Variable order not unique. Value {j} repeated.");
+                }
+
+                mapped.Add(j);
+                this.reverseOrder[j] = i;
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Variable{T}"/> class.
         /// </summary>
@@ -390,7 +431,7 @@ namespace DecisionDiagrams
             }
 
             int index = this.GetVariableIndexForBitPosition(i);
-            return new VarBool<T>(this.Manager, new int[1] { index });
+            return new VarBool<T>(this.Manager, new int[1] { index }, 0);
         }
 
         /// <summary>

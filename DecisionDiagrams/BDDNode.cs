@@ -28,9 +28,10 @@ namespace DecisionDiagrams
         /// <param name="variable">The variable index.</param>
         /// <param name="lo">The low (false) child.</param>
         /// <param name="hi">The high (true) child.</param>
-        public BDDNode(int variable, DDIndex lo, DDIndex hi)
+        /// <param name="prob">The probability of event occurs.</param>
+        public BDDNode(int variable, DDIndex lo, DDIndex hi, double prob)
         {
-            this.data = new NodeData32(variable, false);
+            this.data = new NodeData32(variable, false, prob);
             this.Low = lo;
             this.High = hi;
         }

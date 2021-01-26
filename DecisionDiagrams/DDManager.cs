@@ -432,10 +432,10 @@ namespace DecisionDiagrams
         /// Create a new boolean variable.
         /// </summary>
         /// <returns>A boolean variable.</returns>
-        public VarBool<T> CreateBool()
+        public VarBool<T> CreateBool(double prob)
         {
             var indices = this.CreateSequentialVariables(this.numVariables, 1);
-            var v = new VarBool<T>(this, indices[0]);
+            var v = new VarBool<T>(this, indices[0], prob);
             this.variables.Add(v);
             this.numVariables++;
             return v;
